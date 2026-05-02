@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 .next
+atmosphere-ref
 dist
 dist-ssr
 *.local
