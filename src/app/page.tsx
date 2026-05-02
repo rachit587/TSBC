@@ -7,7 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Star, Clock, MapPin, Phone, MessageCircle, Utensils, Calendar } from "lucide-react";
 
 import { Header } from "@/components/ui/Header";
-import { Footer } from "@/components/ui/Footer";import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
+import { Footer } from "@/components/ui/Footer";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 import { cn } from "@/lib/utils";
 
 const typewriterPhrases = [
@@ -448,6 +449,60 @@ export default function Home() {
               bgColor={["#cb202d", "#E23744"]}
               textColor="#ffffff"
               width={240}
+              height={56}
+            />
+          </div>
+        </section>
+
+        {/* ─── 4.5. FOLLOW & CONNECT ─── */}
+        <section className="py-20 bg-[var(--color-warm-white)] flex flex-col items-center justify-center text-center px-4">
+          <h4 className="font-accent tracking-[0.2em] text-sm text-[var(--color-gold)] font-bold uppercase mb-4">
+            Stay Updated
+          </h4>
+          <h2 className="font-heading text-4xl md:text-5xl text-[var(--color-forest-deep)] mb-12">
+            Follow & <span className="text-[var(--color-gold)]">Connect</span>
+          </h2>
+          
+          <div className="flex flex-col gap-5 w-full items-center">
+            <LiquidMetalButton
+              label="Instagram"
+              href="https://instagram.com"
+              icon={
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              }
+              bgColor={["#d62976", "#962fbf"]}
+              textColor="#ffffff"
+              width={260}
+              height={56}
+            />
+            <LiquidMetalButton
+              label="Facebook"
+              href="https://facebook.com"
+              icon={
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              }
+              bgColor={["#1877F2", "#1152a8"]}
+              textColor="#ffffff"
+              width={260}
+              height={56}
+            />
+            <LiquidMetalButton
+              label="WhatsApp"
+              href="https://wa.me/"
+              icon={
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+              }
+              bgColor={["#25D366", "#128C7E"]}
+              textColor="#ffffff"
+              width={260}
               height={56}
             />
           </div>
