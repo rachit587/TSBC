@@ -66,6 +66,7 @@ export default function Home() {
   const [text, setText] = useState("");
   const [typingSpeed, setTypingSpeed] = useState(100);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [enlargedFoodIdx, setEnlargedFoodIdx] = useState<number | null>(null);
   
   // Ambience Scroll Refs
   const scrollTrackRef = useRef<HTMLDivElement>(null);
@@ -78,6 +79,13 @@ export default function Home() {
   const menuScrollPosRef = useRef(0);
   const menuAnimFrameRef = useRef<number>(0);
   const isMenuPausedRef = useRef(false);
+
+  // Review Scroll Refs
+  const reviewScrollTrackRef = useRef<HTMLDivElement>(null);
+  const reviewScrollPosRef = useRef(0);
+  const reviewAnimFrameRef = useRef<number>(0);
+  const isReviewPausedRef = useRef(false);
+  const reviewDragStartX = useRef<number | null>(null);
 
   // Typewriter effect
   useEffect(() => {
@@ -109,7 +117,7 @@ export default function Home() {
 
     const step = () => {
       if (!isPausedRef.current) {
-        pos += 0.6;
+        pos += 0.69;
         if (pos >= totalWidth) pos = 0;
         scrollPosRef.current = pos;
         track.style.transform = `translateX(-${pos}px)`;
@@ -139,6 +147,54 @@ export default function Home() {
     menuAnimFrameRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(menuAnimFrameRef.current);
   }, []);
+
+  // Review Infinite scroll animation
+  useEffect(() => {
+    const track = reviewScrollTrackRef.current;
+    if (!track) return;
+    const totalWidth = track.scrollWidth / 2;
+    let pos = reviewScrollPosRef.current;
+
+    const step = () => {
+      if (!isReviewPausedRef.current && reviewDragStartX.current === null) {
+        pos += 0.5; // smooth slow scroll
+        if (pos >= totalWidth) pos = 0;
+        if (pos < 0) pos = totalWidth - 0.5;
+        reviewScrollPosRef.current = pos;
+        track.style.transform = `translateX(-${pos}px)`;
+      }
+      reviewAnimFrameRef.current = requestAnimationFrame(step);
+    };
+    reviewAnimFrameRef.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(reviewAnimFrameRef.current);
+  }, []);
+
+  const handleReviewPointerDown = (e: React.PointerEvent) => {
+    isReviewPausedRef.current = true;
+    reviewDragStartX.current = e.clientX;
+  };
+
+  const handleReviewPointerMove = (e: React.PointerEvent) => {
+    if (reviewDragStartX.current === null) return;
+    const diff = reviewDragStartX.current - e.clientX;
+    reviewDragStartX.current = e.clientX;
+    
+    const track = reviewScrollTrackRef.current;
+    if (!track) return;
+    const totalWidth = track.scrollWidth / 2;
+    let pos = reviewScrollPosRef.current + diff;
+    
+    if (pos >= totalWidth) pos -= totalWidth;
+    if (pos < 0) pos += totalWidth;
+    
+    reviewScrollPosRef.current = pos;
+    track.style.transform = `translateX(-${pos}px)`;
+  };
+
+  const handleReviewPointerUp = () => {
+    isReviewPausedRef.current = false;
+    reviewDragStartX.current = null;
+  };
 
   const openLightbox = useCallback((idx: number) => {
     isPausedRef.current = true;
@@ -407,20 +463,29 @@ export default function Home() {
           </div>
 
           <div 
-            className="relative w-full flex overflow-hidden mb-16 pb-8 cursor-pointer select-none"
-            onPointerDown={() => { isMenuPausedRef.current = true; }}
-            onPointerUp={() => { isMenuPausedRef.current = false; }}
-            onPointerLeave={() => { isMenuPausedRef.current = false; }}
+            className="relative w-full flex overflow-hidden mb-16 pb-12 cursor-pointer select-none"
+            onPointerUp={() => { isMenuPausedRef.current = false; setEnlargedFoodIdx(null); }}
+            onPointerLeave={() => { isMenuPausedRef.current = false; setEnlargedFoodIdx(null); }}
           >
             {/* Left and right gradient masks */}
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-24 z-10 bg-gradient-to-r from-[var(--color-forest-deep)] to-transparent" />
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-24 z-10 bg-gradient-to-l from-[var(--color-forest-deep)] to-transparent" />
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-24 z-20 bg-gradient-to-r from-[var(--color-forest-deep)] to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-24 z-20 bg-gradient-to-l from-[var(--color-forest-deep)] to-transparent" />
 
             <div ref={menuScrollTrackRef} className="flex gap-6 px-3 will-change-transform" style={{ width: "max-content" }}>
               {[...featuredFoods, ...featuredFoods].map((item, idx) => (
-                <div key={idx} className="w-56 md:w-64 rounded-2xl overflow-hidden relative group shrink-0 shadow-xl border border-white/10 inner-glow aspect-square bg-white">
+                <div 
+                  key={idx} 
+                  onPointerDown={(e) => { 
+                    isMenuPausedRef.current = true; 
+                    setEnlargedFoodIdx(idx); 
+                  }}
+                  className={cn(
+                    "w-56 md:w-64 rounded-2xl overflow-hidden relative group shrink-0 shadow-xl border border-white/10 inner-glow aspect-square bg-white transition-all duration-300",
+                    enlargedFoodIdx === idx ? "scale-110 md:scale-125 z-50 shadow-2xl ring-4 ring-[var(--color-sage)]" : "scale-100 z-10"
+                  )}
+                >
                   <Image src={item.img} alt={item.name} fill sizes="(max-width: 768px) 224px, 256px" className="object-cover transition-transform duration-700 group-hover:scale-110" draggable={false} loading="lazy" quality={70} />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--color-forest-deep)] to-transparent pt-12 pb-4 px-4">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--color-forest-deep)] to-transparent pt-12 pb-4 px-4 pointer-events-none">
                     <h3 className="text-white font-heading text-lg md:text-xl drop-shadow-md text-center">{item.name}</h3>
                   </div>
                 </div>
@@ -543,22 +608,37 @@ export default function Home() {
             <div className="w-24 mx-auto green-line-h" />
           </div>
 
-          <div className="relative w-full overflow-hidden">
-            <div className="infinite-scroll-track gap-6 px-6">
+          <div 
+            className="relative w-full overflow-hidden cursor-grab active:cursor-grabbing select-none"
+            onPointerDown={handleReviewPointerDown}
+            onPointerMove={handleReviewPointerMove}
+            onPointerUp={handleReviewPointerUp}
+            onPointerLeave={handleReviewPointerUp}
+          >
+            <div ref={reviewScrollTrackRef} className="flex gap-6 px-6 will-change-transform" style={{ width: "max-content" }}>
               {[
-                { name: "Rahul D.", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
-                { name: "Sneha M.", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
-                { name: "Amit K.", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
-                { name: "Priya S.", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
-                { name: "Rahul D.", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
-                { name: "Sneha M.", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
+                { name: "Arnab B.", img: "/a_images/gen/profile_1_1777794665687.png", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
+                { name: "Sohini M.", img: "/a_images/gen/profile_2_1777794680392.png", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
+                { name: "Kabir K.", img: "/a_images/gen/profile_3_1777794695035.png", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
+                { name: "Riya S.", img: "/a_images/gen/profile_4_1777794710433.png", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
+                { name: "Arnab B.", img: "/a_images/gen/profile_1_1777794665687.png", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
+                { name: "Sohini M.", img: "/a_images/gen/profile_2_1777794680392.png", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
+                { name: "Kabir K.", img: "/a_images/gen/profile_3_1777794695035.png", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
+                { name: "Riya S.", img: "/a_images/gen/profile_4_1777794710433.png", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
               ].map((review, idx) => (
-                <div key={idx} className="w-80 md:w-96 p-8 rounded-2xl glass-panel shadow-sm shrink-0 flex flex-col gap-4 border-l-4 border-l-[var(--color-emerald-rich)]">
-                  <div className="flex text-[var(--color-emerald-mid)]">
-                    {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
+                <div key={idx} className="w-80 md:w-96 p-8 rounded-2xl glass-panel shadow-sm shrink-0 flex flex-col gap-4 border-l-4 border-l-[var(--color-emerald-rich)] pointer-events-none">
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-14 h-14 rounded-full overflow-hidden shrink-0 border border-[var(--color-line-green)]">
+                      <Image src={review.img} alt={review.name} fill className="object-cover" sizes="56px" />
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="font-heading font-bold text-lg text-[var(--color-forest-deep)] leading-tight">{review.name}</p>
+                      <div className="flex text-[var(--color-emerald-mid)] mt-1">
+                        {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
+                      </div>
+                    </div>
                   </div>
                   <p className="font-accent text-[var(--color-charcoal-soft)] italic flex-grow">"{review.text}"</p>
-                  <p className="font-heading font-bold text-lg text-[var(--color-forest-deep)]">— {review.name}</p>
                 </div>
               ))}
             </div>
