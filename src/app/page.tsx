@@ -617,14 +617,14 @@ export default function Home() {
           >
             <div ref={reviewScrollTrackRef} className="flex gap-6 px-6 will-change-transform" style={{ width: "max-content" }}>
               {[
-                { name: "Arnab B.", img: "/a_images/gen/profile_1_1777794665687.png", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
-                { name: "Sohini M.", img: "/a_images/gen/profile_2_1777794680392.png", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
-                { name: "Kabir K.", img: "/a_images/gen/profile_3_1777794695035.png", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
-                { name: "Riya S.", img: "/a_images/gen/profile_4_1777794710433.png", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
-                { name: "Arnab B.", img: "/a_images/gen/profile_1_1777794665687.png", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
-                { name: "Sohini M.", img: "/a_images/gen/profile_2_1777794680392.png", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
-                { name: "Kabir K.", img: "/a_images/gen/profile_3_1777794695035.png", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
-                { name: "Riya S.", img: "/a_images/gen/profile_4_1777794710433.png", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
+                { name: "Arnab Bhattacharya", img: "/a_images/gen/profile_1_1777794665687.png", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
+                { name: "Sohini Mukherjee", img: "/a_images/gen/profile_2_1777794680392.png", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
+                { name: "Kabir Hossain", img: "/a_images/gen/profile_3_1777794695035.png", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
+                { name: "Riya Sarkar", img: "/a_images/gen/profile_4_1777794710433.png", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
+                { name: "Arnab Bhattacharya", img: "/a_images/gen/profile_1_1777794665687.png", text: "Best cafe in Rampurhat! The Chicken Dynamite and White Sauce Pasta are absolute must-tries. The ambience is incredibly cozy." },
+                { name: "Sohini Mukherjee", img: "/a_images/gen/profile_2_1777794680392.png", text: "Love the vibe here. Perfect place for hanging out with friends. Their cold coffee and burgers never disappoint." },
+                { name: "Kabir Hossain", img: "/a_images/gen/profile_3_1777794695035.png", text: "Great food, aesthetic interior, and polite staff. The sizzlers are really good. Highly recommended!" },
+                { name: "Riya Sarkar", img: "/a_images/gen/profile_4_1777794710433.png", text: "A hidden gem. The Heavenly Blue Mojito is so refreshing. Definitely visiting again for the pizzas." },
               ].map((review, idx) => (
                 <div key={idx} className="w-80 md:w-96 p-8 rounded-2xl glass-panel shadow-sm shrink-0 flex flex-col gap-4 border-l-4 border-l-[var(--color-emerald-rich)] pointer-events-none">
                   <div className="flex items-center gap-4">
