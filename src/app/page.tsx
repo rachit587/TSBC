@@ -505,7 +505,7 @@ export default function Home() {
             />
             <LiquidMetalButton
               label="Order from Zomato"
-              href="https://www.zomato.com/rampurhat/the-story-begins-cafe-rampurhat-locality"
+              href="https://www.zomato.com/rampurhat/the-story-begins-cafe-rampurhat-locality/order"
               icon={
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.12 14.67c-1.18 1.18-3.08 1.18-4.26 0l-3.53-3.53c-1.18-1.18-1.18-3.08 0-4.26s3.08-1.18 4.26 0l3.53 3.53c1.17 1.18 1.17 3.08 0 4.26z"/>
