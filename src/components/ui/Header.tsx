@@ -48,7 +48,7 @@ export function Header() {
                 "transition-all duration-500 w-auto origin-top-left",
                 isScrolled
                   ? "h-14 md:h-16"
-                  : "h-16 md:h-20 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+                  : "h-32 md:h-40 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
               )}
             />
           </Link>

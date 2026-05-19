@@ -275,7 +275,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8">
+              <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8" style={{ isolation: "isolate", position: "relative", zIndex: 60 }}>
                 <LiquidMetalButton
                   label="View Menu"
                   href="/menu"
